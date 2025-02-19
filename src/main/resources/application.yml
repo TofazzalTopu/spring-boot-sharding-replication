@@ -18,3 +18,8 @@ spring:
       username: shard3_user
       password: shard3_pass
       driver-class-name: oracle.jdbc.OracleDriver
+    shard4:
+      url: jdbc:oracle:thin:@db-shard-4:1521:orcl
+      username: shard4_user
+      password: shard4_pass
+      driver-class-name: oracle.jdbc.OracleDriver

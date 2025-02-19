@@ -19,29 +19,29 @@ import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.info.replica.repository.shard3", entityManagerFactoryRef = "shard3EntityManagerFactory", transactionManagerRef = "shard3TransactionManager")
-public class ThirdShardingConfig {
+@EnableJpaRepositories(basePackages = "com.info.replica.repository.shard4", entityManagerFactoryRef = "shard4EntityManagerFactory", transactionManagerRef = "shard4TransactionManager")
+public class FourthShardConfig {
 
     @Value("${spring.jpa.database-platform}")
     private String HIBERNATE_DIALECT;
 
-    @Bean(name = "shard3DataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.shard3")
+    @Bean(name = "shard4DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.shard4")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "shard3EntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("shard3DataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
+    @Bean(name = "shard4EntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("shard4DataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
         return builder.dataSource(dataSource)
                 .packages("com.info.replica.entity") // Entity package
-                .persistenceUnit("shard3")
+                .persistenceUnit("shard4")
                 .properties(Map.of("hibernate.dialect", HIBERNATE_DIALECT)) // Explicitly set dialect
                 .build();
     }
 
-    @Bean(name = "shard3TransactionManager")
-    public PlatformTransactionManager transactionManager(@Qualifier("shard3EntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "shard4TransactionManager")
+    public PlatformTransactionManager transactionManager(@Qualifier("shard4EntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 }
